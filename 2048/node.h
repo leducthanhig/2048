@@ -1,37 +1,67 @@
-#ifndef _NODE_H_
-#define _NODE_H_
+#ifndef NODE_H
+#define NODE_H
 
 #include <iostream>
+#include <fstream>
 using namespace std;
 
-// [Templates in C++ with Examples](https://www.geeksforgeeks.org/templates-cpp)
 template <typename T>
-struct node {
-    T data;
+class node {
+    T* data;
     node* next;
 
-    node(T);
+public:
+    node(T* data);
+    node();
     ~node();
+    T* getData();
+    node* getNext();
+    void setData(T* data);
+    void setNext(node* next);
+    void serialize(fstream& fs, bool bWrite);
 };
 
+#endif
+
 template <typename T>
-node<T>::node(T val) {
-    data = val;
-    next = NULL;
+node<T>::node(T* data) {
+    this->data = data;
+    next = nullptr;
+}
+
+template<typename T>
+node<T>::node() {
+    data = nullptr;
+    next = nullptr;
 }
 
 template <typename T>
 node<T>::~node() {
-    /*
-        Copilot:
-            [is_pointer Template in C++](https://www.geeksforgeeks.org/is_pointer-template-in-cpp)
-            [std::is_pointer](https://en.cppreference.com/w/cpp/types/is_pointer)
-            [Template parameters and template arguments](https://en.cppreference.com/w/cpp/language/template_parameters)
-    */
-    if constexpr (is_pointer<T>::value) {
-        delete data;
-    }
-    next = NULL;
+    delete data;
+    next = nullptr;
 }
 
-#endif
+template<typename T>
+T* node<T>::getData() {
+    return data;
+}
+
+template<typename T>
+void node<T>::setData(T* data) {
+    this->data = data;
+}
+
+template<typename T>
+void node<T>::setNext(node* next) {
+    this->next = next;
+}
+
+template<typename T>
+node<T>* node<T>::getNext() {
+    return next;
+}
+
+template<typename T>
+void node<T>::serialize(fstream& fs, bool bWrite) {
+    data->serialize(fs, bWrite);
+}

@@ -1,11 +1,12 @@
-#ifndef _GAMEPLAYER_H_
-#define _GAMEPLAYER_H_
+#ifndef GAMEPLAYER_H
+#define GAMEPLAYER_H
 
-#include "2048.h"
+#include "game.h"
 
-struct GamePlayer {
+class GamePlayer {
 	Game* game;
 	
+public:
 	GamePlayer();
 	~GamePlayer();
 };

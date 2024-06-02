@@ -1,166 +1,227 @@
-#ifndef _LINKEDLIST_H_
-#define _LINKEDLIST_H_
+#ifndef LINKEDLIST_H
+#define LINKEDLIST_H
 
 #include "node.h"
-#include <iostream>
-using namespace std;
 
-// [Templates in C++ with Examples](https://www.geeksforgeeks.org/templates-cpp)
-template <typename T>
-struct linkedList {
+template<typename T>
+class linkedList {
+protected:
     node<T> *head;
     int size;
 
+public:
     linkedList();
     ~linkedList();
-    void addHead(T val);
-	void addNode(int pos, T val);
-	void addTail(T val);
+    int getSize();
+    node<T>* getHead();
+    node<T>* getNode(int pos);
+    void addHead(T* val);
+	void addNode(int pos, T* val);
+	void addTail(T* val);
 	void delHead();
 	void delNode(int pos);
 	void delTail();
-    void delNodeByVal(T val);
-    void printList();
-    void updateNode(T oldVal, T newVal);
-    T getNode(int pos);
+    void delNodeByVal(T* val);
+    void updateNode(T* oldVal, T* newVal);
+    void serialize(fstream& fs, bool bWrite);
+    void print();
+    bool empty();
+    int find(T* nd, bool(*comparator)(T*, T*));
 };
 
-template <typename T>
+#endif
+
+template<typename T>
 linkedList<T>::linkedList() {
-    head = NULL;
+    head = nullptr;
     size = 0;
 }
 
-template <typename T>
+template<typename T>
 linkedList<T>::~linkedList() {
-    node<T>* tmp;
-    while (head != NULL) {
-        tmp = head;
-        head = head->next;
-        delete tmp;
+    node<T>* cur;
+    while (head) {
+        cur = head;
+        head = head->getNext();
+        delete cur;
+        cur = nullptr;
     }
 }
 
-template <typename T>
-void linkedList<T>::addHead(T val) {
+template<typename T>
+void linkedList<T>::addHead(T* val) {
     addNode(0, val);
 }
 
-template <typename T>
-void linkedList<T>::addNode(int pos, T val) {
-    if (pos == 0 || head == NULL) {
+template<typename T>
+void linkedList<T>::addNode(int pos, T* val) {
+    if (pos < 0) return;
+    if (pos == 0 || head == nullptr) {
         node<T>* newNode = new node<T>(val);
-        newNode->next = head;
+        newNode->setNext(head);
         head = newNode;
     }
     else {
-        node<T>* tmp = head;
-        while (tmp->next != NULL && pos > 1) {
-            tmp = tmp->next;
+        node<T>* cur = head;
+        while (cur->getNext() && pos > 1) {
+            cur = cur->getNext();
             pos--;
         }
         node<T>* newNode = new node<T>(val);
-        newNode->next = tmp->next;
-        tmp->next = newNode;
+        newNode->setNext(cur->getNext());
+        cur->setNext(newNode);
     }
     size++;
 }
 
-template <typename T>
-void linkedList<T>::addTail(T val) {
+template<typename T>
+void linkedList<T>::addTail(T* val) {
     addNode(size, val);
 }
 
-template <typename T>
+template<typename T>
 void linkedList<T>::delHead() {
     delNode(0);
 }
 
-template <typename T>
+template<typename T>
 void linkedList<T>::delNode(int pos) {
-    if (head == NULL) return;
+    if (head == nullptr || pos < 0) return;
     if (pos == 0 || size == 1) {
-        node<T>* needDel = head;
-        head = head->next;
-        delete needDel;
+        node<T>* cur = head;
+        head = head->getNext();
+        delete cur;
+        cur = nullptr;
     }
     else {
-        node<T>* tmp = head;
-        while (tmp->next->next != NULL && pos > 1) {
-            tmp = tmp->next;
+        node<T>* cur = head;
+        while (cur->getNext()->getNext() && pos > 1) {
+            cur = cur->getNext();
             pos--;
         }
-        node<T>* needDel = tmp->next;
-        tmp->next = tmp->next->next;
-        delete needDel;
+        node<T>* tmp = cur->getNext();
+        cur->setNext(cur->getNext()->getNext());
+        delete tmp;
+        tmp = nullptr;
     }
     size--;
 }
 
-template <typename T>
+template<typename T>
 void linkedList<T>::delTail() {
     delNode(size - 1);
 }
 
-template <typename T>
-void linkedList<T>::delNodeByVal(T val) {
-    while (head != NULL && head->data == val) {
-        node<T>* needDel = head;
-        head = head->next;
-        delete needDel;
+template<typename T>
+void linkedList<T>::delNodeByVal(T* val) {
+    while (head && head->getData() == val) {
+        node<T>* cur = head;
+        head = head->getNext();
+        delete cur;
+        cur = nullptr;
         size--;
     }
-    if (head != NULL) {
-        node<T>* temp = head;
-        while (temp->next->next != NULL) {
-            if (temp->next->data == val) {
-                node<T>* needDel = temp->next;
-                temp->next = temp->next->next;
+    if (head) {
+        node<T>* cur = head;
+        while (cur->getNext()->getNext()) {
+            if (cur->getNext()->getData() == val) {
+                node<T>* needDel = cur->getNext();
+                cur->setNext(cur->getNext()->getNext());
                 delete needDel;
+                cur = nullptr;
                 size--;
             }
             else {
-                temp = temp->next;
+                cur = cur->getNext();
             }
         }
-        if (temp->next->data == val) {
-            node<T>* needDel = temp->next;
-            temp->next = temp->next->next;
-            delete needDel;
+        if (cur->getNext()->getData() == val) {
+            node<T>* tmp = cur->getNext();
+            cur->setNext(cur->getNext()->getNext());
+            delete tmp;
+            tmp = nullptr;
             size--;
         }
     }
 }
 
-template <typename T>
-void linkedList<T>::printList() {
+template<typename T>
+void linkedList<T>::print() {
     node<T>* temp = head;
-    while (temp != NULL) {
-        cout << temp->data << " ";
-        temp = temp->next;
+    while (temp) {
+        cout << temp->getData() << " ";
+        temp = temp->getNext();
     }
     cout << endl;
 }
 
-template <typename T>
-void linkedList<T>::updateNode(T oldVal, T newVal) {
+template<typename T>
+void linkedList<T>::updateNode(T* oldVal, T* newVal) {
     node<T>* temp = head;
-    while (temp != NULL) {
-        if (temp->data == oldVal) {
-            temp->data = newVal;
+    while (temp) {
+        if (temp->getData() == oldVal) {
+            temp->setData(newVal);
         }
-        temp = temp->next;
+        temp = temp->getNext();
+    }
+}
+//[Reading and writing classes with pointers to binary files in c++](https://stackoverflow.com/a/32833242)
+template<typename T>
+void linkedList<T>::serialize(fstream& fs, bool bWrite) {
+    if (bWrite) {
+        fs.write(reinterpret_cast<char*>(&size), sizeof(size));
+        node<T>* tmp = head;
+        while (tmp) {
+            tmp->serialize(fs, bWrite);
+            tmp = tmp->getNext();
+        }
+    }
+    else {
+        int size;
+        fs.read(reinterpret_cast<char*>(&size), sizeof(size));
+        T* data;
+        while (size--) {
+            data = new T();
+            data->serialize(fs, bWrite);
+            addTail(data);
+        }
     }
 }
 
-template <typename T>
-T linkedList<T>::getNode(int pos) {
+template<typename T>
+bool linkedList<T>::empty() {
+    return (size == 0);
+}
+
+template<typename T>
+int linkedList<T>::getSize() {
+    return size;
+}
+
+template<typename T>
+int linkedList<T>::find(T* nd, bool(*comparator)(T*, T*)) {
+    node<T>* tmp = head;
+    int pos = 0;
+    while (tmp && !comparator(tmp->getData(), nd)) {
+        tmp = tmp->getNext();
+        pos++;
+    }
+    if (tmp) return pos;
+    return -1;
+}
+
+template<typename T>
+node<T>* linkedList<T>::getNode(int pos) {
+    if (!head || pos < 0) return nullptr;
     node<T>* temp = head;
-    while (temp->next != NULL && pos > 0) {
+    while (temp->getNext() && pos > 0) {
         pos--;
-        temp = temp->next;
+        temp = temp->getNext();
     }
-    return temp->data;
+    return temp;
 }
 
-#endif
+template<typename T>
+node<T>* linkedList<T>::getHead() {
+    return head;
+}

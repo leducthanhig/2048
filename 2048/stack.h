@@ -1,85 +1,52 @@
-#ifndef _STACK_H_
-#define _STACK_H_
+#ifndef STACK_H
+#define STACK_H
 
 #include "linkedList.h"
-#include <iostream>
-using namespace std;
 
-// [Templates in C++ with Examples](https://www.geeksforgeeks.org/templates-cpp)
-template <typename T>
-struct stack {
-    linkedList<T>* l;
-
-    stack();
-    ~stack();
-    T top();
-    void push(T val);
+template<typename T>
+class stack : public linkedList<T> {
+public:
+    T* top();
+    void push(T* val);
     void pop();
-    T pop_r();
+    T* pop_r();
     void clear();
-    void print();
-    bool empty();
-    int size();
 };
 
-template <typename T>
-stack<T>::stack() {
-    l = new linkedList<T>;
-}
+#endif
 
-template <typename T>
-stack<T>::~stack() {
-    delete l;
-}
-
-template <typename T>
-T stack<T>::top() {
-    if (l->head) {
-        return l->head->data;
+template<typename T>
+T* stack<T>::top() {
+    if (this->head) {
+        return this->head->getData();
     }
-    return T();
-}
-
-template <typename T>
-void stack<T>::push(T val) {
-    l->addHead(val);
-}
-
-template <typename T>
-void stack<T>::pop() {
-    l->delHead();
-}
-
-template <typename T>
-T stack<T>::pop_r() {
-    if (l->head) {
-        T tmp = l->head->data;
-        l->head = l->head->next;
-        l->size--;
-        return tmp;
-    }
-    return T();
-}
-
-template <typename T>
-void stack<T>::clear() {
-    delete l;
-    l = new linkedList<T>;
-}
-
-template <typename T>
-void stack<T>::print() {
-    l->printList();
-}
-
-template <typename T>
-bool stack<T>::empty() {
-    return l->head == NULL;
+    return nullptr;
 }
 
 template<typename T>
-inline int stack<T>::size() {
-    return l->size;
+void stack<T>::push(T* val) {
+    this->addHead(val);
 }
 
-#endif
+template<typename T>
+void stack<T>::pop() {
+    this->delHead();
+}
+
+template<typename T>
+T* stack<T>::pop_r() {
+    if (this->head) {
+        T* tmp = this->head->getData();
+        this->head = this->head->getNext();
+        this->size--;
+        return tmp;
+    }
+    return nullptr;
+}
+
+template<typename T>
+void stack<T>::clear() {
+    while (this->head) {
+        pop();
+    }
+}

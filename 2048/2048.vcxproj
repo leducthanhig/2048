@@ -131,19 +131,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="2048.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="board.cpp" />
+    <ClCompile Include="homeMenu.cpp" />
+    <ClCompile Include="inGame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GamePlayer.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="settings.cpp" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2048.h" />
-    <ClInclude Include="linkedList.h" />
+    <ClInclude Include="board.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="linkedlist.h" />
     <ClInclude Include="GamePlayer.h" />
     <ClInclude Include="node.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="settings.h" />
     <ClInclude Include="stack.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="data.bin" />
+    <ClInclude Include="timer.h" />
+    <ClInclude Include="utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
