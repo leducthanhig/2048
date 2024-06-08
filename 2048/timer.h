@@ -4,7 +4,7 @@
 #include <ctime>
 
 class Timer {
-	time_t startTime, totalTime;
+	time_t startTime, totalTime, addedTime;
 	bool isPaused, isStopped;
 
 public:
@@ -13,6 +13,7 @@ public:
 	void pause();
 	void resume();
 	void stop();
+	void addSecs(time_t secs);
 	time_t getTotalTime();
 };
 

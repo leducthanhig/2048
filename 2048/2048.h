@@ -24,7 +24,6 @@ using namespace std;
 
 #define TOP_LIST_LIMIT 20
 #define DATA_SLOT 5
-
 #define WIN_THRESHOLD 2048
 
 #endif

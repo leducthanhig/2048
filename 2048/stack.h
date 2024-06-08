@@ -36,10 +36,10 @@ void stack<T>::pop() {
 template<typename T>
 T* stack<T>::pop_r() {
     if (this->head) {
-        T* tmp = this->head->getData();
+        T* cur = this->head->getData();
         this->head = this->head->getNext();
         this->size--;
-        return tmp;
+        return cur;
     }
     return nullptr;
 }

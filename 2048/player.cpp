@@ -50,7 +50,7 @@ void Player::serialize(fstream& fs, bool bWrite) {
         fs.read(reinterpret_cast<char*>(name), sizeof(name));
         fs.read(reinterpret_cast<char*>(&score), sizeof(score));
         fs.read(reinterpret_cast<char*>(&time), sizeof(time));
-        encrypt(name);
+        //encrypt(name);
     }
 }
 

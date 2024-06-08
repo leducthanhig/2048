@@ -1,12 +1,6 @@
 ﻿#include "game.h"
 
 Game::Game() {
-	// Make the console not to be resized
-	// [How to change console window style at runtime?](https://stackoverflow.com/a/41173938)
-	HWND consoleWindow = GetConsoleWindow();
-	SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
-	// Hide the console cursor
-	showCursor(0);
 	// Initalise properties and assign default values
 	player = new Player;
 	board = nullptr;

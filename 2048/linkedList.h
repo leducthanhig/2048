@@ -125,9 +125,9 @@ void linkedList<T>::delNodeByVal(T* val) {
         node<T>* cur = head;
         while (cur->getNext()->getNext()) {
             if (cur->getNext()->getData() == val) {
-                node<T>* needDel = cur->getNext();
+                node<T>* tmp = cur->getNext();
                 cur->setNext(cur->getNext()->getNext());
-                delete needDel;
+                delete tmp;
                 cur = nullptr;
                 size--;
             }
@@ -147,22 +147,22 @@ void linkedList<T>::delNodeByVal(T* val) {
 
 template<typename T>
 void linkedList<T>::print() {
-    node<T>* temp = head;
-    while (temp) {
-        cout << temp->getData() << " ";
-        temp = temp->getNext();
+    node<T>* cur = head;
+    while (cur) {
+        cout << cur->getData() << " ";
+        cur = cur->getNext();
     }
     cout << endl;
 }
 
 template<typename T>
 void linkedList<T>::updateNode(T* oldVal, T* newVal) {
-    node<T>* temp = head;
-    while (temp) {
-        if (temp->getData() == oldVal) {
-            temp->setData(newVal);
+    node<T>* cur = head;
+    while (cur) {
+        if (cur->getData() == oldVal) {
+            cur->setData(newVal);
         }
-        temp = temp->getNext();
+        cur = cur->getNext();
     }
 }
 //[Reading and writing classes with pointers to binary files in c++](https://stackoverflow.com/a/32833242)
@@ -170,10 +170,10 @@ template<typename T>
 void linkedList<T>::serialize(fstream& fs, bool bWrite) {
     if (bWrite) {
         fs.write(reinterpret_cast<char*>(&size), sizeof(size));
-        node<T>* tmp = head;
-        while (tmp) {
-            tmp->serialize(fs, bWrite);
-            tmp = tmp->getNext();
+        node<T>* cur = head;
+        while (cur) {
+            cur->serialize(fs, bWrite);
+            cur = cur->getNext();
         }
     }
     else {
@@ -181,7 +181,7 @@ void linkedList<T>::serialize(fstream& fs, bool bWrite) {
         fs.read(reinterpret_cast<char*>(&size), sizeof(size));
         T* data;
         while (size--) {
-            data = new T();
+            data = new T;
             data->serialize(fs, bWrite);
             addTail(data);
         }
@@ -200,25 +200,25 @@ int linkedList<T>::getSize() {
 
 template<typename T>
 int linkedList<T>::find(T* nd, bool(*comparator)(T*, T*)) {
-    node<T>* tmp = head;
+    node<T>* cur = head;
     int pos = 0;
-    while (tmp && !comparator(tmp->getData(), nd)) {
-        tmp = tmp->getNext();
+    while (cur && !comparator(cur->getData(), nd)) {
+        cur = cur->getNext();
         pos++;
     }
-    if (tmp) return pos;
+    if (cur) return pos;
     return -1;
 }
 
 template<typename T>
 node<T>* linkedList<T>::getNode(int pos) {
     if (!head || pos < 0) return nullptr;
-    node<T>* temp = head;
-    while (temp->getNext() && pos > 0) {
+    node<T>* cur = head;
+    while (cur->getNext() && pos > 0) {
         pos--;
-        temp = temp->getNext();
+        cur = cur->getNext();
     }
-    return temp;
+    return cur;
 }
 
 template<typename T>

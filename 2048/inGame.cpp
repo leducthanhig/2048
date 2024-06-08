@@ -59,7 +59,7 @@ void Game::refresh() {
 
 void Game::showPauseMenu() {
 	system("cls");
-	resizeConsoleWindow(1024, 576);
+	setConsoleWindowSize(30, 114);
 
 	gotoxy((114 - 10) / 2 - 2, 9);
 	cout << "╔";
@@ -144,11 +144,27 @@ int Game::processPauseMenu(int when) {
 			case 3:
 				if (when == 0) updateRank();
 				if (confirm("save game")) {
-					if (dataSlot != 0) saveData();
+					if (dataSlot != 0) {
+						system("cls");
+						gotoxy(54, 11);
+						cout << "SAVING";
+						for (int i = 0; i < 3; i++) {
+							cout << ".";
+							Sleep(250);
+						}
+						saveData();
+					}
 					else {
 						do {
 							dataSlot = getDataSlot(0);
 							if (dataSlot != -1) {
+								system("cls");
+								gotoxy(54, 11);
+								cout << "SAVING";
+								for (int i = 0; i < 3; i++) {
+									cout << ".";
+									Sleep(250);
+								}
 								saveData();
 							}
 						} while (dataSlot == -1);
@@ -164,6 +180,13 @@ int Game::processPauseMenu(int when) {
 							do {
 								dataSlot = getDataSlot(0);
 								if (dataSlot != -1) {
+									system("cls");
+									gotoxy(54, 11);
+									cout << "SAVING";
+									for (int i = 0; i < 3; i++) {
+										cout << ".";
+										Sleep(250);
+									}
 									saveData();
 								}
 							} while (dataSlot == -1);
@@ -186,7 +209,7 @@ int Game::processPauseMenu(int when) {
 
 void Game::showLoseMessage() {
 	system("cls");
-	resizeConsoleWindow(1024, 576);
+	setConsoleWindowSize(30, 114);
 	
 	int rank = updateRank();
 
@@ -224,7 +247,7 @@ void Game::showLoseMessage() {
 
 void Game::showWinMessage() {
 	system("cls");
-	resizeConsoleWindow(1024, 576);
+	setConsoleWindowSize(30, 114);
 
 	int rank = updateRank();
 
@@ -263,6 +286,7 @@ void Game::showWinMessage() {
 bool Game::processInGameEvents() {
 	Timer* timer = new Timer;
 	timer->start();
+	timer->addSecs(player->getTime());
 	board->drawFrame();
 	board->showUpdatedBoard(getBestScore());
 	settings->showEnableUndoRedo();
@@ -302,7 +326,7 @@ bool Game::processInGameEvents() {
 			break;
 		case 'p': case KEY_ESCAPE: // Pause game
 			timer->pause();
-			player->setTime(timer->getTotalTime() + player->getTime());
+			player->setTime(timer->getTotalTime());
 			ret = processPauseMenu(0);
 			timer->resume();
 			if (ret != 3) delete timer;
@@ -325,7 +349,7 @@ bool Game::processInGameEvents() {
 
 			if ((board->isFull() && !board->canMove()) || changed == 2) {
 				timer->pause();
-				player->setTime(timer->getTotalTime() + player->getTime());
+				player->setTime(timer->getTotalTime());
 				ret = processPauseMenu(changed == 2 ? 1 : -1);
 				timer->resume();
 				if (ret != 3) delete timer;

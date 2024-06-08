@@ -1,8 +1,7 @@
 #include "game.h"
 // Draw the home menu
 void Game::showHomeMenu() {
-	// Resize the console window to 1024x576
-	resizeConsoleWindow(1024, 576);
+	setConsoleWindowSize(30, 114);
 	system("cls");
 
 	cout << "\n\n";
@@ -36,7 +35,7 @@ void Game::showHomeMenu() {
 	cout << "EXIT\n";
 }
 // Get and check if the player name is already exist
-void Game::getPlayerName() {
+bool Game::getPlayerName() {
 	while (1) {
 		system("cls");
 
@@ -69,25 +68,33 @@ void Game::getPlayerName() {
 			else if (input == KEY_ENTER && len) {
 				break;
 			}
+			else if (input == KEY_ESCAPE) {
+				delete[] name;
+				showCursor(0);
+				return 0;
+			}
 		}
 		showCursor(0);
 
 		strip(name);
 		player->setName(name);
 		delete[] name;
-		if (top20->find(player, sameName) != -1) {
+		if (top20->find(player, sameName) != -1 || find(dataSlots, DATA_SLOT, player->getName()) != -1) {
 			system("cls");
 			gotoxy(31, 11);
 			cout << "This name is already exits. Please use another name!";
 			Sleep(1000);
 		}
-		else break;
+		else return 1;
 	}
 }
 
 void Game::newGame() {
 	dataSlot = 0;
-	getPlayerName();
+	if (!getPlayerName()) {
+		dataSlot = -1;
+		return;
+	}
 	board = new Board(settings->getSize());
 	board->spawnNum();
 	board->spawnNum();
@@ -97,7 +104,7 @@ void Game::resume() {
 	if (dataSlot == -1) return;
 	
 	system("cls");
-	gotoxy(53, 11);
+	gotoxy(54, 11);
 	cout << "LOADING";
 	for (int i = 0; i < 3; i++) {
 		cout << ".";
@@ -189,6 +196,7 @@ void Game::showInstructions() {
 
 void Game::showSettings() {
 	settings->showSettings();
+	settings->processSettingEvents();
 }
 // Show home menu
 bool Game::processHomeMenuEvents() {

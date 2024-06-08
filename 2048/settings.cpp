@@ -57,7 +57,34 @@ void Settings::showSettings() {
 	cout << (undoEnable ? "On " : "Off");
 	gotoxy(39 + 27, 13);
 	cout << ((undoEnable && redoEnable) ? "On " : "Off");
+}
 
+void Settings::showEnableUndoRedo() {
+	HANDLE console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	gotoxy(size * 8 + 1 + 3 + (33 - 19) / 2, 8);
+	if (!undoEnable) SetConsoleTextAttribute(console_color, 8);
+	cout << "[u] Undo";
+	SetConsoleTextAttribute(console_color, 15);
+	cout << " / ";
+	if (!redoEnable) SetConsoleTextAttribute(console_color, 8);
+	cout << "[r] Redo";
+	SetConsoleTextAttribute(console_color, 15);
+}
+//[Reading and writing classes with pointers to binary files in c++](https://stackoverflow.com/a/32833242)
+void Settings::serialize(fstream& fs, bool bWrite) {
+	if (bWrite) {
+		fs.write(reinterpret_cast<char*>(&size), sizeof(size));
+		fs.write(reinterpret_cast<char*>(&undoEnable), sizeof(undoEnable));
+		fs.write(reinterpret_cast<char*>(&redoEnable), sizeof(redoEnable));
+	}
+	else {
+		fs.read(reinterpret_cast<char*>(&size), sizeof(size));
+		fs.read(reinterpret_cast<char*>(&undoEnable), sizeof(undoEnable));
+		fs.read(reinterpret_cast<char*>(&redoEnable), sizeof(redoEnable));
+	}
+}
+
+void Settings::processSettingEvents() {
 	int input;
 	int choice = 1;
 	string text1, text2;
@@ -224,30 +251,5 @@ void Settings::showSettings() {
 			}
 			break;
 		}
-	}
-}
-
-void Settings::showEnableUndoRedo() {
-	HANDLE console_color = GetStdHandle(STD_OUTPUT_HANDLE);
-	gotoxy(size * 8 + 1 + 4 + (33 - 19) / 2, 8);
-	if (!undoEnable) SetConsoleTextAttribute(console_color, 8);
-	cout << "[u] Undo";
-	SetConsoleTextAttribute(console_color, 15);
-	cout << " / ";
-	if (!redoEnable) SetConsoleTextAttribute(console_color, 8);
-	cout << "[r] Redo";
-	SetConsoleTextAttribute(console_color, 15);
-}
-//[Reading and writing classes with pointers to binary files in c++](https://stackoverflow.com/a/32833242)
-void Settings::serialize(fstream& fs, bool bWrite) {
-	if (bWrite) {
-		fs.write(reinterpret_cast<char*>(&size), sizeof(size));
-		fs.write(reinterpret_cast<char*>(&undoEnable), sizeof(undoEnable));
-		fs.write(reinterpret_cast<char*>(&redoEnable), sizeof(redoEnable));
-	}
-	else {
-		fs.read(reinterpret_cast<char*>(&size), sizeof(size));
-		fs.read(reinterpret_cast<char*>(&undoEnable), sizeof(undoEnable));
-		fs.read(reinterpret_cast<char*>(&redoEnable), sizeof(redoEnable));
 	}
 }

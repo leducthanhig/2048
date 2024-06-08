@@ -223,7 +223,7 @@ bool Board::isFull() {
 
 void Board::drawFrame() {
 	system("cls");
-	resizeConsoleWindow(1.0 * GetSystemMetrics(SM_CXSCREEN) * (size * 8 + 1 + 3 + 34 + 3 + 2) / 174, 1.0 * GetSystemMetrics(SM_CYSCREEN) * (size * 4 + 3) / 46);
+	setConsoleWindowSize(size * 4 + 1, size * 8 + 1 + 3 + 34 + 3);
 
 	cout << right << "╔";
 	for (int i = 0; i < size - 1; i++) {
@@ -255,20 +255,22 @@ void Board::drawFrame() {
 	}
 	cout << "═══════╝";
 
-	gotoxy(size * 8 + 1 + 4 + (33 - 10) / 2, 2);
+	gotoxy(size * 8 + 1 + 3 + (33 - 10) / 2, 2);
 	cout << "Best Score";
-	gotoxy(size * 8 + 1 + 4 + (33 - 5) / 2, 5);
+	gotoxy(size * 8 + 1 + 3 + (33 - 5) / 2, 5);
 	cout << "Score";
-	gotoxy(size * 8 + 1 + 4, 10);
+	gotoxy(size * 8 + 1 + 3, 10);
 	cout << "Press [p] or ESC to pause the game";
 }
 
 void Board::showUpdatedBoard(unsigned long long bestScore) {
 	// [Colorizing text and console background in C++](https://www.geeksforgeeks.org/colorizing-text-and-console-background-in-c)
 	HANDLE console_color = GetStdHandle(STD_OUTPUT_HANDLE);
-	gotoxy(size * 8 + 1 + 4 + (33 - to_string(bestScore).length()) / 2, 3);
+	gotoxy(size * 8 + 1 + 3 + (33 - to_string(bestScore).length()) / 2, 3);
 	cout << bestScore;
-	gotoxy(size * 8 + 1 + 4 + (33 - to_string(score).length()) / 2, 6);
+	gotoxy(size * 8 + 1 + 3, 6);
+	cout << setw(34) << " ";
+	gotoxy(size * 8 + 1 + 3 + (33 - to_string(score).length()) / 2);
 	cout << score;
 
 	int colorPalette[] = { 31, 47, 79, 95, 159, 175, 207, 16, 32, 64, 80, 144, 160, 176, 192, 27, 43, 75, 171, 203, 219, 165, 181 };

@@ -18,6 +18,7 @@ public:
 	void showSettings();
 	void showEnableUndoRedo();
 	void serialize(fstream& fs, bool bWrite);
+	void processSettingEvents();
 };
 
 #endif

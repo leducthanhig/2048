@@ -11,10 +11,10 @@ class Player {
 public:
 	Player();
 	Player(const char* name, unsigned long long score, time_t time);
-	Player* copy();
 	const char* getName();
 	unsigned long long getScore();
 	time_t getTime();
+	Player* copy();
 	void setName(char* name);
 	void setScore(unsigned long long score);
 	void setTime(time_t time);

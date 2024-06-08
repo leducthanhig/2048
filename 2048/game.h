@@ -2,9 +2,9 @@
 #define GAME_H
 
 #include "2048.h"
-#include "stack.h"
 #include "player.h"
 #include "board.h"
+#include "stack.h"
 #include "settings.h"
 #include "timer.h"
 
@@ -18,7 +18,7 @@ class Game {
 	char** dataSlots;
 	linkedList<Player>* top20;
 	Settings* settings;
-
+	// Game methods
 	int updateRank();
 	int getDataSlot(bool load);
 	void showDataSlot();
@@ -26,15 +26,15 @@ class Game {
 	void saveData();
 	void loadData();
 	bool confirm(string msg);
-
-	void getPlayerName();
+	// Home menu methods
+	bool getPlayerName();
 	void newGame();
 	void resume();
 	void showTop20();
 	void showInstructions();
 	void showSettings();
 	void showHomeMenu();
-
+	// In-game methods
 	Board* saveState();
 	void loadState(Board* state);
 	void undo(Board* state);

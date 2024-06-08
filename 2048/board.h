@@ -11,8 +11,8 @@ public:
 	Board();
 	Board(int size);
 	~Board();
-	int getSize();
 	unsigned long long getScore();
+	int getSize();
 	int moveUpToDown();
 	int moveDownToUp();
 	int moveLeftToRight();
