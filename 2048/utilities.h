@@ -18,6 +18,7 @@ void resizeConsoleWindow(int width, int height);
 void setConsoleWindowSize(int rows, int columns);
 void setConsoleUnscrollable();
 void setConsoleProperties();
+void showMessage(string msg, int x, int y, int delay = 0);
 string wfill(string s, int len);
 string formatTime(time_t secs);
 

@@ -21,7 +21,7 @@ class Game {
 	// Game methods
 	int updateRank();
 	int getDataSlot(bool load);
-	void showDataSlot();
+	void showDataSlots();
 	void checkDataFiles();
 	void saveData();
 	void loadData();

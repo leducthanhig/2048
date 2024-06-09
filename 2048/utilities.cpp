@@ -79,7 +79,7 @@ void setConsoleWindowSize(int rows, int columns) {
 	// Set console window size using virtual terminal sequences
 	// Copilot + [Console Virtual Terminal Sequences](https://learn.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences#window-width)
 	cout << "\x1b[8;" << rows << ";" << columns << "t"; // ESC [ 8 ; rows ; columns t
-	Sleep(5); // Wait for the console window to redraw and update its layout
+	Sleep(10); // Wait for the console window to redraw and update its layout
 	// Get the current console window size in pixels to align to the center
 	// [How to get width and height from CreateWindowEx() window? C++](https://stackoverflow.com/a/615555)
 	RECT rect;
@@ -109,6 +109,21 @@ void setConsoleProperties() {
 	// [How to change console window style at runtime?](https://stackoverflow.com/a/41173938)
 	// [Window Styles](https://learn.microsoft.com/en-us/windows/win32/winmsg/window-styles)
 	SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_SYSMENU);
+}
+
+void showMessage(string msg, int x, int y, int delay) {
+	system("cls");
+	gotoxy(x - msg.length() / 2, y);
+	cout << msg;
+	if (delay) {
+		Sleep(delay);
+	}
+	else {
+		for (int i = 0; i < 3; i++) {
+			cout << ".";
+			Sleep(250);
+		}
+	}
 }
 
 string wfill(string s, int len) {

@@ -277,7 +277,7 @@ void Board::showUpdatedBoard(unsigned long long bestScore) {
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			if (data[i][j] != 0) {
-				SetConsoleTextAttribute(console_color, colorPalette[int(log2(data[i][j])) + 1]);
+				SetConsoleTextAttribute(console_color, colorPalette[int(log2(data[i][j])) - 1]);
 				gotoxy(1 + 8 * j, 2 + 4 * i - 1);
 				cout << "       ";
 				gotoxy(1 + 8 * j, 2 + 4 * i);

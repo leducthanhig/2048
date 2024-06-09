@@ -32,13 +32,7 @@ GamePlayer::GamePlayer() {
 }
 
 GamePlayer::~GamePlayer() {
-	system("cls");
-	gotoxy(54, 11);
-	cout << "EXITING";
-	for (int i = 0; i < 3; i++) {
-		cout << ".";
-		Sleep(250);
-	}
+	showMessage("EXITING", 57, 13);
 	delete game;
 	game = nullptr;
 }

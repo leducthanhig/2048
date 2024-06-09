@@ -101,7 +101,7 @@ void Game::loadData() {
 }
 // Get the data slot that the player want to use
 int Game::getDataSlot(bool load) {
-	showDataSlot();
+	showDataSlots();
 
 	int input, choice = 1;
 	highlightText(40, 10 + choice, " " + to_string(choice) + " - " + wfill((dataSlots[choice - 1][0] != '\0' ? dataSlots[choice - 1] : "Empty"), 29));
@@ -128,7 +128,7 @@ int Game::getDataSlot(bool load) {
 		case KEY_ENTER: case KEY_SPACEBAR:
 			if (!load || dataSlots[choice - 1][0] != '\0') {
 				if (confirm("choose this slot")) return choice;
-				showDataSlot();
+				showDataSlots();
 				highlightText(40, 10 + choice, " " + to_string(choice) + " - " + wfill((dataSlots[choice - 1][0] != '\0' ? dataSlots[choice - 1] : "Empty"), 29));
 			}
 			break;
@@ -138,7 +138,7 @@ int Game::getDataSlot(bool load) {
 	}
 }
 
-void Game::showDataSlot() {
+void Game::showDataSlots() {
 	system("cls");
 	gotoxy(39, 8);
 	cout << "╔══════════════════════════════════╗\n";

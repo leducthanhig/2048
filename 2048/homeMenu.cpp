@@ -80,10 +80,7 @@ bool Game::getPlayerName() {
 		player->setName(name);
 		delete[] name;
 		if (top20->find(player, sameName) != -1 || find(dataSlots, DATA_SLOT, player->getName()) != -1) {
-			system("cls");
-			gotoxy(31, 11);
-			cout << "This name is already exits. Please use another name!";
-			Sleep(1000);
+			showMessage("This name is already exits. Please use another name!", 57, 13, 1000);
 		}
 		else return 1;
 	}
@@ -103,13 +100,7 @@ void Game::resume() {
 	dataSlot = getDataSlot(1);
 	if (dataSlot == -1) return;
 	
-	system("cls");
-	gotoxy(54, 11);
-	cout << "LOADING";
-	for (int i = 0; i < 3; i++) {
-		cout << ".";
-		Sleep(250);
-	}
+	showMessage("LOADING", 57, 13);
 	board = new Board;
 	loadData();
 	settings->setSize(board->getSize());

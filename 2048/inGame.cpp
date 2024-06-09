@@ -16,10 +16,7 @@ void Game::undo(Board* state) {
 		board->showUpdatedBoard(getBestScore());
 	}
 	else {
-		system("cls");
-		gotoxy((settings->getSize() * 8 + 1 + 3 + 34 + 3 + 2 - 14) / 2, (settings->getSize() * 4 + 1) * 0.45);
-		cout << "Unable to undo!";
-		Sleep(500);
+		showMessage("Unable to undo!", (settings->getSize() * 8 + 1 + 3 + 34 + 3 + 2) / 2, (settings->getSize() * 4 + 1) * 0.45, 500);
 		board->drawFrame();
 		board->showUpdatedBoard(getBestScore());
 		settings->showEnableUndoRedo();
@@ -33,10 +30,7 @@ void Game::redo(Board* state) {
 		board->showUpdatedBoard(getBestScore());
 	}
 	else {
-		system("cls");
-		gotoxy((settings->getSize() * 8 + 1 + 3 + 34 + 3 + 2 - 14) / 2, (settings->getSize() * 4 + 1) * 0.45);
-		cout << "Unable to redo!";
-		Sleep(500);
+		showMessage("Unable to redo!", (settings->getSize() * 8 + 1 + 3 + 34 + 3 + 2) / 2, (settings->getSize() * 4 + 1) * 0.45, 500);
 		board->drawFrame();
 		board->showUpdatedBoard(getBestScore());
 		settings->showEnableUndoRedo();
@@ -129,10 +123,7 @@ int Game::processPauseMenu(int when) {
 			switch (choice) {
 			case 1:
 				if (when == -1) {
-					system("cls");
-					gotoxy((114 - 65) / 2, 11);
-					cout << "You will be rolled back to the previous step to continue playing!";
-					Sleep(1200);
+					showMessage("You will be rolled back to the previous step to continue playing!", 114 / 2, 13, 1200);
 				}
 				board->drawFrame();
 				board->showUpdatedBoard(getBestScore());
@@ -145,26 +136,14 @@ int Game::processPauseMenu(int when) {
 				if (when == 0) updateRank();
 				if (confirm("save game")) {
 					if (dataSlot != 0) {
-						system("cls");
-						gotoxy(54, 11);
-						cout << "SAVING";
-						for (int i = 0; i < 3; i++) {
-							cout << ".";
-							Sleep(250);
-						}
+						showMessage("SAVING", 57, 13);
 						saveData();
 					}
 					else {
 						do {
 							dataSlot = getDataSlot(0);
 							if (dataSlot != -1) {
-								system("cls");
-								gotoxy(54, 11);
-								cout << "SAVING";
-								for (int i = 0; i < 3; i++) {
-									cout << ".";
-									Sleep(250);
-								}
+								showMessage("SAVING", 57, 13);
 								saveData();
 							}
 						} while (dataSlot == -1);
@@ -180,13 +159,7 @@ int Game::processPauseMenu(int when) {
 							do {
 								dataSlot = getDataSlot(0);
 								if (dataSlot != -1) {
-									system("cls");
-									gotoxy(54, 11);
-									cout << "SAVING";
-									for (int i = 0; i < 3; i++) {
-										cout << ".";
-										Sleep(250);
-									}
+									showMessage("SAVING", 57, 13);
 									saveData();
 								}
 							} while (dataSlot == -1);
